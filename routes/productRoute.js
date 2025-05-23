@@ -12,4 +12,9 @@ router.get('/getAllProducts', (req, res) => {
     res.json(products)
 })
 
+router.post('/addProduct', (req, res) => {
+    const newProduct = req.body
+    res.status(201).json({ message: 'Product added successfully', product: newProduct })
+})
+
 module.exports = router
