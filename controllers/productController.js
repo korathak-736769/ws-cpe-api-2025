@@ -35,3 +35,20 @@ exports.getProductsById = async (req, res) => {
     }
 }
 
+exports.updateProductsById = async (req, res) => {
+    try {
+        const { id } = req.params
+        const { product_name, product_price } = req.body
+
+        if (!product_name || !product_price) {
+            return res.status(400).json({ message: 'Please provide all required fields [product_name, product_price]' })
+        }
+
+        const products = await ProductModel.findByIdAndUpdate(id, { product_name, product_price }, { new: true })
+        res.status(200).json({ message: 'Product updated successfully', product: products })
+    } catch (error) {
+        console.error('Error fetching products:', error)
+        res.status(500).json({ message: 'Internal server error' })
+    }
+}
+
