@@ -1,3 +1,19 @@
+const ProductModel = require('../models/productModel')
+
+exports.addProduct = async (req, res) => {
+    try {
+        const { product_name, product_price } = req.body
+        if(!product_name || !product_price){
+            return res.status(400).json({ message: 'Please provide all required fields [product_name, product_price]' })
+        }
+        const newProduct = new ProductModel({ product_name, product_price })
+        await newProduct.save()
+        res.status(201).json({ message: 'Product added successfully', product: newProduct })
+    } catch (error) {
+        console.error('Error adding product:', error)
+        res.status(500).json({ message: 'Internal server error' })
+    }
+}
 
 exports.getAllProducts = async (req, res) => {
     const products = [
@@ -10,7 +26,3 @@ exports.getAllProducts = async (req, res) => {
     res.json(products)
 }
 
-exports.addProduct = async (req, res) => {
-    const newProduct = req.body
-    res.status(201).json({ message: 'Product added successfully', product: newProduct })
-}
